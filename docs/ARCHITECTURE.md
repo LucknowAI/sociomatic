@@ -2,12 +2,14 @@
 
 ## Overview
 
-The system is a simple web app with:
+The system is a web app with:
 
 - A **React frontend** for the UI.
-- A **FastAPI backend** for auth, business logic, and AI integration.
-- A **relational database** (SQLite/Postgres) for persistence.
+- A **NestJS (Node.js + TypeScript) backend** for auth, business logic, AI integration, and future agents.
+- A **relational database** (PostgreSQL in practice) for persistence.
 - A pluggable **AI provider** using the **Google Gemini API** for text generation (abstracted so we can swap models later).
+
+Over time this will evolve into an **agent‑aware architecture**, where some backend services are promoted into specialized AI agents (see `AGENTIC_SYSTEM.md`).
 
 ## Components
 
@@ -15,7 +17,7 @@ The system is a simple web app with:
 
 - **Pages**
   - `Login` / `Register`
-  - `Dashboard` (posts list)
+  - `Dashboard` (posts list and schedule)
   - `CreateIdea`
   - `Settings`
 - **Key UI Components**
@@ -24,22 +26,23 @@ The system is a simple web app with:
   - `PostsList` (grouped by date)
   - `PostEditorModal`
 
-Communicates with the backend via JSON over HTTP, using a JWT for auth.
+The frontend communicates with the backend via JSON over HTTP, using a JWT for auth.
 
-### Backend (FastAPI)
+### Backend (NestJS)
 
-- **Modules/routers**
-  - `auth`: registration, login, JWT management.
-  - `ideas`: CRUD for ideas.
-  - `posts`: CRUD for posts/schedule.
-  - `ai`: endpoints that call the AI provider.
+- **Modules**
+  - `AuthModule`: registration, login, JWT management.
+  - `IdeasModule`: CRUD for ideas.
+  - `PostsModule`: CRUD for posts/schedule.
+  - `AiModule` / `ContentAgentModule`: endpoints that call the AI provider to generate LinkedIn drafts.
+  - Future: `AnalyticsModule`, `ReportingAgentModule`, `CreativeAgentModule` (see `AGENTIC_SYSTEM.md`).
 
 - **AI Integration (Gemini‑first, pluggable)**
-  - `ai_client.py`:
+  - A dedicated **Gemini client/service**:
     - Reads settings from env (`AI_PROVIDER`, `GEMINI_API_KEY`).
     - For MVP, `AI_PROVIDER = "gemini"` and all generations use **Google Gemini API**.
     - Exposes:
-      - `generate_linkedin_posts(idea, tone) -> List[str]`.
+      - `generateLinkedinPosts(idea, tone) -> string[]`.
   - Responsibilities:
     - Build prompts optimized for LinkedIn (hook in first lines, hashtags, CTA).
     - Enforce max length and handle truncation.
@@ -50,30 +53,39 @@ Communicates with the backend via JSON over HTTP, using a JWT for auth.
 - **User**
   - `id`
   - `email`
-  - `password_hash`
-  - `created_at`
+  - `passwordHash`
+  - `createdAt`
 
 - **Idea**
   - `id`
-  - `user_id`
+  - `userId`
   - `title`
   - `description`
   - `type` (`event`, `launch`, `update`, `education`)
   - `link` (optional)
   - `audience` (free text)
-  - `tags` (comma‑separated string or JSON)
-  - `created_at`
+  - `tags` (string array / JSON)
+  - `createdAt`
 
 - **Post**
   - `id`
-  - `idea_id` (FK to Idea)
+  - `ideaId` (FK to Idea)
   - `platform` (fixed to `linkedin` for v0)
   - `content` (text)
   - `tone`
-  - `scheduled_at` (nullable)
+  - `scheduledAt` (nullable)
   - `status` (`draft`, `scheduled`, `manual-posted`)
-  - `created_at`
-  - `updated_at`
+  - `createdAt`
+  - `updatedAt`
+
+- **AgentRun** (future, for agentic workflows)
+  - `id`
+  - `agentType` (`content`, `data`, `analyst`, `creative`, `reporting`)
+  - `status` (`pending`, `running`, `succeeded`, `failed`)
+  - `inputRef` (reference to Idea, time range, etc.)
+  - `outputRef` (reference to generated drafts, insights, or reports)
+  - `startedAt`
+  - `finishedAt`
 
 ## API Endpoints (MVP)
 
@@ -90,7 +102,7 @@ Communicates with the backend via JSON over HTTP, using a JWT for auth.
   - `POST /posts`
   - `PATCH /posts/{id}`
 
-- **AI**
+- **AI / Content agent**
   - `POST /ai/generate-post`
     - Input: `ideaId`, optional `tone`.
     - Output: array of post text variants.
@@ -101,5 +113,5 @@ Communicates with the backend via JSON over HTTP, using a JWT for auth.
 - Introduce **Workspace** and **Member** tables for multi‑tenant support.
 - Add **metrics** and analytics tables for performance tracking.
 - Extend `platform` to support `x`, `instagram`, and introduce media entities for images/video.
-
+- Promote key backend services into **specialized agents** (Data, Analyst, Content, Creative, Reporting) orchestrated by dedicated workflows (see `AGENTIC_SYSTEM.md`).
 

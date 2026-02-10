@@ -10,7 +10,7 @@
   - List all Ideas for the logged‑in user.
 - **AI (Gemini) integration**
   - Connect to Google Gemini API using an API key.
-  - Generate 2–3 LinkedIn post variants for a selected Idea.
+  - Generate 2–3 LinkedIn post variants for a selected Idea via a simple **Content service** (future **Content agent v0**).
 - **PostDrafts & scheduling**
   - Create PostDraft from AI output or manual input.
   - Edit content, set scheduled date/time, set status (draft/scheduled/manual‑posted).
@@ -48,14 +48,14 @@
   - Top posts by engagement.
   - Performance by Idea type (event vs launch vs education).
 - **Reporting**
-  - Weekly email summary to community managers with highlights and suggestions.
+  - Weekly email summary to community managers with highlights and suggestions, implemented via a **Reporting service** (future **Reporting/Analyst agents v0**).
 
 ## v0.4 – Additional Platforms & Media
 
 - **Platforms**
   - Add X (Twitter) and/or Instagram support.
 - **AI media support**
-  - Suggest static image concepts and generate prompts for an image model.
+  - Suggest static image concepts and generate prompts for an image model (future **Creative agent v0**).
   - Generate short video scripts for announcements or recaps.
 - **Cross‑platform campaigns**
   - Create a single Idea and generate posts for multiple platforms with different formats.
@@ -68,5 +68,23 @@
 - **Gamification**
   - Streak tracking and basic leaderboards.
   - Simple badges/achievements for participants.
+
+## v1.0+ – Agentic Automation (Future)
+
+High‑level direction (see `FUTURE_PLAN.md` and `AGENTIC_SYSTEM.md` for details):
+
+- **Data agent**
+  - Aggregates and normalizes performance metrics and external signals.
+- **Analyst agent**
+  - Produces one‑page insight reports and suggested themes based on Data agent outputs.
+- **Content agent**
+  - Proposes weekly content plans and drafts posts across platforms.
+- **Creative agent**
+  - Suggests visuals and media assets or prompts for generated content.
+- **Reporting agent**
+  - Generates narrative weekly/monthly reports and recommendations.
+
+These agents will be introduced gradually by evolving existing services and workflows rather than as a separate system.
+
 
 

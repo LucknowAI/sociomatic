@@ -5,6 +5,15 @@
 Sociomatic helps tech/dev communities **publish consistently on LinkedIn** by turning real community activity  
 (events, launches, wins, content) into **high‑quality, ready‑to‑post LinkedIn updates** with minimal manual effort.
 
+Over time, Sociomatic should feel less like a single tool and more like a **small team of specialized assistants (agents)** that:
+
+- Collect and interpret performance data and market signals.
+- Propose themes and content plans.
+- Draft social copy and supporting creative.
+- Summarize what worked and what to try next.
+
+The initial MVP stays simple, but the long‑term product direction is described in `FUTURE_PLAN.md` and `AGENTIC_SYSTEM.md`.
+
 ## Target Users
 
 - **Primary**: Community managers / organizers of dev communities.
@@ -68,5 +77,11 @@ Existing tools are:
 - Team permissions and complex roles.
 - Multi‑community / multi‑tenant support.
 - Automated posting and analytics (v0.1+).
+
+Future versions will introduce:
+
+- Analytics‑driven insights and weekly reports (see **v0.3** in `ROADMAP.md`).
+- Media and multi‑platform support (see **v0.4** in `ROADMAP.md`).
+- Specialized agents (Data, Analyst, Content, Creative, Reporting) that sit behind these features (see `AGENTIC_SYSTEM.md`).
 
 
